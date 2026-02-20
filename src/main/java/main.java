@@ -1,6 +1,29 @@
+import dev.langchain4j.data.message.AiMessage;
+import dev.langchain4j.data.message.ChatMessage;
+import dev.langchain4j.data.message.UserMessage;
+import dev.langchain4j.model.openai.OpenAiChatModel;
 
- class main {
+import java.util.ArrayList;
+import java.util.List;
+
+class main {
     public static void main(String[] args) {
-
+        // El TOKEN no es necesario para interactuar con modelos locales
+        final String TOKEN = "PEGA_AQUI_TU_TOKEN";
+        var model = OpenAiChatModel.builder()
+                .baseUrl("http://localhost:11434/v1")
+                .apiKey(TOKEN)
+                .modelName("gemma:2b")
+                .build();
+        List<ChatMessage> history = new ArrayList<>();
+        // Interacción 1
+        history.add(new UserMessage("Hola, soy Germán"));
+        AiMessage respuesta = model.chat(history).aiMessage();
+        history.add(respuesta);
+        // Interacción 2
+        history.add(new UserMessage("¿Recuerdas cómo me llamo?"));
+        respuesta = model.chat(history).aiMessage();
+        history.add(respuesta);
+        System.out.println(respuesta.text());
     }
-}
+ }
