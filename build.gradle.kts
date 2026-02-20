@@ -1,4 +1,5 @@
 plugins {
+    application
     id("java")
 }
 
@@ -20,4 +21,31 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+fun isWindows(): Boolean =
+    System.getProperty("os.name").lowercase().contains("win")
+
+tasks.register<Exec>("ollamaVersion") {
+    if (isWindows()) {
+        commandLine("cmd", "/c", "ollama --version")
+    } else {
+        commandLine("bash", "-lc", "ollama --version")
+    }
+}
+tasks.register<Exec>("ollamaPs") {
+    if (isWindows()) {
+        commandLine("cmd", "/c", "ollama ps")
+    } else {
+        commandLine("bash", "-lc", "ollama ps")
+    }
+}
+tasks.register("llmInfo") {
+    dependsOn("ollamaVersion", "ollamaPs")
+
+    doLast {
+        println("Demo finalizada")
+    }
+}
+application {
+    mainClass.set("com.IkerMorera.tema4gradle.Main")
 }

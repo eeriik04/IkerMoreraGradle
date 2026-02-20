@@ -1,3 +1,5 @@
+package com.IkerMorera.tema4gradle;
+
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.data.message.*;
 
